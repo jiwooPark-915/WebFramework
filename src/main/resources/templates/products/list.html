@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:insert="~{common :: commonHead}">
+    <title>Product Manager</title>
+    <!-- Bootstrap CSS로 페이지의 디자인을 스타일링 합니다 -->
+    <link
+            href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+            rel="stylesheet"
+    >
+</head>
+
+<body>
+
+<!-- 로그인 성공 시 상단에 표시되는 알림 메시지 (고정 위치) -->
+<div
+        th:if="${loginSuccess}"
+        class="alert alert-success alert-dismissible fade show fixed-top"
+        role="alert"
+        style="z-index: 1050; top: 0; width: 100%; margin: 0; padding-top: 60px;"
+>
+    <strong>로그인 성공!</strong> 로그인에 성공하셨습니다.
+    <!-- 알림 메시지를 닫는 버튼 -->
+    <button
+            type="button"
+            class="close"
+            data-dismiss="alert"
+            aria-label="Close"
+            onclick="this.closest('.alert').style.display = 'none';"
+    >
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<!-- 관리자 페이지 버튼 (ROLE_ADMIN인 경우에만 표시) -->
+<div sec:authorize="hasRole('ROLE_ADMIN')" class="text-right">
+    <a class="btn btn-secondary mb-3" th:href="@{/admin/users}">관리자 페이지</a>
+</div>
+
+<!-- 상품 목록을 표시하는 컨테이너 -->
+<div class="container" style="padding-top: 60px;">
+    <h1 class="mt-5">Product List</h1>
+
+    <!-- 관리자 권한을 가진 사용자만 "Create New Product" 버튼을 클릭할 수 있게 허용 -->
+    <a
+            class="btn btn-primary mb-3"
+            th:href="@{/products/new}"
+            sec:authorize="hasRole('ADMIN')"
+    >
+        Create New Product
+    </a>
+
+    <!-- 상품 목록 테이블 -->
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>Product ID</th>  <!-- 상품 ID -->
+            <th>Name</th>        <!-- 상품 이름 -->
+            <th>Brand</th>       <!-- 브랜드 -->
+            <th>Made In</th>     <!-- 생산국 -->
+            <th>Price</th>       <!-- 가격 -->
+            <th>Actions</th>     <!-- 액션 (수정 및 삭제 버튼) -->
+        </tr>
+        </thead>
+        <tbody>
+        <!-- 상품 목록을 반복하여 출력 (Thymeleaf의 th:each를 사용) -->
+        <tr th:each="product : ${listProducts}">
+            <td th:text="${product.id}">Product ID</td>  <!-- 상품 ID -->
+            <td th:text="${product.name}">Name</td>     <!-- 상품 이름 -->
+            <td th:text="${product.brand}">Brand</td>   <!-- 브랜드 -->
+            <td th:text="${product.madeIn}">Made in</td><!-- 생산국 -->
+            <td th:text="${product.price}">Price</td>   <!-- 가격 -->
+            <td>
+                <!-- 관리자만 상품 수정 버튼을 클릭할 수 있음 -->
+                <a
+                        class="btn btn-primary btn-sm"
+                        th:href="@{'/products/edit/' + ${product.id}}"
+                        sec:authorize="hasRole('ADMIN')"
+                >
+                    Edit
+                </a>
+                <!-- 관리자만 상품 삭제 버튼을 클릭할 수 있음 -->
+                <a
+                        class="btn btn-danger btn-sm"
+                        th:href="@{'/products/delete/' + ${product.id}}"
+                        sec:authorize="hasRole('ADMIN')"
+                >
+                    Delete
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- 로그아웃 버튼 -->
+    <div class="text-center mt-4">
+        <form th:action="@{/logout}" method="post">
+            <button type="submit" class="btn btn-secondary">Logout</button>
+        </form>
+    </div>
+</div>
+
+<!-- Bootstrap JS + dependencies (jQuery, Popper) 추가 -->
+<script
+        src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous">
+</script>
+<script
+        src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDuLyv0hK5xImGXWv10JqIZdrSQNncjLRp6jqWYFbh/uow7C5D"
+        crossorigin="anonymous">
+</script>
+<script
+        src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-XNXfh+iDpSlx2hyMfCGMx3n2Q6zvXGSVynZwRCgN4B3ko1CN/WXPiX6/0VaFq/jp"
+        crossorigin="anonymous">
+</script>
+
+<!-- 공통 스크립트 삽입 (필요 시) -->
+<div th:insert="~{common :: commonScript}"></div>
+
+</body>
+</html>

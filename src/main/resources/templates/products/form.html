@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${product.id == null ? '새 상품 추가' : '상품 수정'}">상품 정보</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        body {
+            background-color: #f8f9fa; /* 연한 회색 배경 */
+            display: flex;
+            justify-content: center; /* 가로 중앙 정렬 */
+            align-items: center; /* 세로 중앙 정렬 */
+            min-height: 100vh; /* 최소 높이를 뷰포트 전체 높이로 설정 */
+            margin: 0;
+        }
+        .form-container {
+            background-color: #ffffff; /* 흰색 폼 배경 */
+            padding: 2.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+            max-width: 500px; /* 폼의 최대 너비 */
+            width: 100%; /* 너비를 100%로 설정 (max-width에 제한됨) */
+        }
+        .form-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #343a40; /* 진한 회색 제목 */
+        }
+        .btn-group-custom {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1.5rem;
+        }
+        .btn-group-custom .btn {
+            flex-grow: 1; /* 버튼이 공간을 고르게 차지하도록 */
+            margin: 0 0.25rem; /* 버튼 사이 간격 */
+        }
+        .btn-group-custom .btn:first-child {
+            margin-left: 0;
+        }
+        .btn-group-custom .btn:last-child {
+            margin-right: 0;
+        }
+    </style>
+</head>
+<body>
+<div class="form-container">
+    <h2 class="form-title" th:text="${product.id == null ? '새 상품 추가' : '상품 수정'}"></h2>
+
+
+
+    <form th:action="@{/products/save}" th:object="${product}" method="post">
+        <input type="hidden" th:field="*{id}" th:if="${product.id != null}" />
+
+        <div th:if="${#fields.hasGlobalErrors()}" class="alert alert-danger">
+            <p th:each="err : ${#fields.globalErrors()}" th:text="${err}"></p>
+        </div>
+
+        <div class="mb-3">
+            <label for="name" class="form-label">name:</label>
+            <input type="text" id="name" th:field="*{name}" class="form-control"
+                   th:classappend="${#fields.hasErrors('name') ? 'is-invalid' : ''}" />
+            <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="invalid-feedback"></div>
+        </div>
+
+        <div class="mb-3">
+            <label for="brand" class="form-label">brand:</label>
+            <input type="text" id="brand" th:field="*{brand}" class="form-control"
+                   th:classappend="${#fields.hasErrors('brand') ? 'is-invalid' : ''}" /> <div th:if="${#fields.hasErrors('brand')}" th:errors="*{brand}" class="invalid-feedback"></div>
+        </div>
+
+        <div class="mb-3">
+            <label for="madeIn" class="form-label">madeIn:</label>
+            <input type="text" id="madeIn" th:field="*{madeIn}" class="form-control"
+                   th:classappend="${#fields.hasErrors('madeIn') ? 'is-invalid' : ''}" /> <div th:if="${#fields.hasErrors('madeIn')}" th:errors="*{madeIn}" class="invalid-feedback"></div>
+        </div>
+
+        <div class="mb-3">
+            <label for="price" class="form-label">price:</label>
+            <input type="number" id="price" th:field="*{price}" class="form-control" step="0.01"
+                   th:classappend="${#fields.hasErrors('price') ? 'is-invalid' : ''}" />
+            <div th:if="${#fields.hasErrors('price')}" th:errors="*{price}" class="invalid-feedback"></div>
+        </div>
+
+        <div class="btn-group-custom">
+            <button type="submit" class="btn btn-primary">저장</button>
+            <a th:href="@{/products}" class="btn btn-secondary">목록으로</a>
+        </div>
+    </form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>

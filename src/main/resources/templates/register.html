@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head th:insert="~{common :: commonHead}">
+    <title>Register New Account</title>
+</head>
+
+<body>
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header text-center">
+                    <h2>Register</h2>  <!-- 페이지 제목: 회원가입 -->
+                </div>
+                <div class="card-body">
+                    <!-- 에러 메시지 처리: 이메일 중복 등으로 인한 에러 발생 시 화면에 출력 -->
+                    <form th:action="@{/register}" th:object="${user}" method="post">
+                        <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+                            <span th:text="${errorMessage}"></span>  <!-- 에러 메시지를 동적으로 표시 -->
+                        </div>
+
+                        <!-- 이메일 입력 필드 -->
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email:</label>
+                            <input type="email" id="email" class="form-control" th:field="*{email}" placeholder="Enter your email" required autofocus />
+                        </div>
+
+                        <!-- 비밀번호 입력 필드 -->
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password:</label>
+                            <input type="password" id="password" class="form-control" th:field="*{password}" placeholder="Enter your password" required />
+                        </div>
+
+                        <!-- 회원가입 버튼 -->
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">Register</button>
+                        </div>
+                    </form>
+
+                    <!-- 로그인 페이지로 이동하는 링크 -->
+                    <div class="text-center mt-3">
+                        <p>이미 계정이 있으신가요? <a th:href="@{/login}">로그인</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 공통 스크립트 삽입 (필요 시) -->
+<div th:insert="~{common :: commonScript}"></div>
+</body>
+</html>

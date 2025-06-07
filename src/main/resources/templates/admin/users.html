@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:insert="~{common :: commonHead}">
+  <title>All Users</title>
+  <!-- Bootstrap CSS (스타일을 위한 부트스트랩 라이브러리 링크) -->
+  <link
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          rel="stylesheet"
+  >
+</head>
+
+<body>
+
+<!-- 컨테이너로 페이지 전체를 감싸 사용자 목록을 표시합니다. -->
+<div class="container mt-5">
+  <h1>All Users</h1> <!-- 페이지의 제목을 표시 -->
+
+  <!-- 사용자 목록을 테이블 형태로 표시 -->
+  <table class="table table-bordered">
+    <thead>
+    <tr>
+      <th>순서</th> <!-- 순서를 나타내는 열 -->
+      <th>이메일</th> <!-- 이메일을 나타내는 열 -->
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Thymeleaf의 반복문을 사용하여 ${users}에서 데이터를 하나씩 뽑아서 출력 -->
+    <tr th:each="user, iterStat : ${users}">
+      <td th:text="${iterStat.index + 1}">순서</td> <!-- 사용자 순서를 출력 (iterStat.index는 0부터 시작하므로 +1로 1부터 시작하도록 처리) -->
+      <td th:text="${user.email}">이메일</td> <!-- 각 사용자의 이메일을 출력 -->
+    </tr>
+    </tbody>
+  </table>
+
+</div>
+
+<!-- Bootstrap JS + dependencies (jQuery, Popper) -->
+<script
+        src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous">
+</script>
+<script
+        src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDuLyv0hK5xImGXWv10JqIZdrSQNncjLRp6jqWYFbh/uow7C5D"
+        crossorigin="anonymous">
+</script>
+<script
+        src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-XNXfh+iDpSlx2hyMfCGMx3n2Q6zvXGSVynZwRCgN4B3ko1CN/WXPiX6/0VaFq/jp"
+        crossorigin="anonymous">
+</script>
+
+</body>
+</html>
